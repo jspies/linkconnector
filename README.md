@@ -1,6 +1,7 @@
 # Linkconnector
 
-TODO: Write a gem description
+This gem provides an easy to use interface for searching the Linkconnector API. Linkconnector provides APIs for sites like iStockphoto and Thinkstock among lots of others here: http://www.linkconnector.com/featuredmerchants.htm. You will need an API key from linkconnector.
+
 
 ## Installation
 
@@ -18,7 +19,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+First configure linkconnector to use your API key. In Rails I do this in an initializer
+
+```
+require "linkconnector"
+
+Linkconnector.configure(
+  api_key: "YOUR API KEY",
+  default_merchant_ids: ["11111"] # scope all requests to these merchants
+)
+```
+
+Use Linkconnector::Item to search for results. The syntax is similar to ActiveRelation but not 100% equivalent.
+
+```
+@images = Linkconnector::Item.search("cats").type("vector").limit(10).page(1).all
+```
+
+You can limit you searches to specific merchants. Otherwise linkconnector will return results from any merchant that you have access to.
+
+```
+Linkconnector::Item.merchant("THIS COOL MERCHANT ID").search("puppies").all
+```
 
 ## Contributing
 
